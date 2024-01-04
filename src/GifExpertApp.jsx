@@ -1,17 +1,16 @@
 import { useState } from 'react'
 import { AddCategory } from './components/AddCategory'
+import { GifGrid } from './components/GifGrid'
 
 export const GifExpertApp = () => {
   // ¡¡¡No se deben poner hooks dentro de condicionales!!!
 
-  const [categories, setCategories] = useState([
-    'Death Note',
-    'Dragon Ball',
-  ])
+  const [categories, setCategories] = useState(['Death Note'])
 
-  const onAddCategory = () => {
-    setCategories(['Saint Seiya', ...categories])
-    // setCategories((cat) => [...cat, 'Saint Seiya']) // Otra forma de insertar
+  const onAddCategory = (newCategory) => {
+    if (categories.includes(newCategory)) return
+    setCategories([newCategory, ...categories])
+    // setCategories((cat) => [newCategory, ...categories]) // Otra forma de insertar
   }
 
   return (
@@ -20,14 +19,16 @@ export const GifExpertApp = () => {
       <h1>GifExpertApp</h1>
 
       {/* Input */}
-      <AddCategory setCategories={setCategories} />
+      <AddCategory
+        // setCategories={setCategories}
+        onNewCategory={(value) => onAddCategory(value)}
+      />
 
       {/* Listado de gif */}
-      <ol>
-        {categories.map((category) => {
-          return <li key={category}>{category}</li>
-        })}
-      </ol>
+      {categories.map((category) => (
+        <GifGrid key={category} category={category} />
+      ))}
+
       {/* Gif Item */}
     </>
   )
